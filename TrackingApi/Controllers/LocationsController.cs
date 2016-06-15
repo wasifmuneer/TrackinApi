@@ -10,6 +10,7 @@ using TrackingApi.Repositories;
 namespace TrackingApi.Controllers
 {
     [RoutePrefix("api/Locations")]
+    [Authorize]
     public class LocationsController : ApiController
     {
         private readonly IFrequentLocationsRepository _locations=null;

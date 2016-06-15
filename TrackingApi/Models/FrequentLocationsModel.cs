@@ -18,6 +18,11 @@ namespace TrackingApi.Models
 
         public string type { get; set; }
 
+        public DateTime SavedDate { get; set; }
+
+        public string UserID { get; set; }
+
+
         public Loc coordinates { get { return locations; } set { locations = value; } }
 
         

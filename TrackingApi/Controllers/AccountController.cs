@@ -16,6 +16,7 @@ using Microsoft.Owin.Security.OAuth;
 using TrackingApi.Models;
 using TrackingApi.Providers;
 using TrackingApi.Results;
+using TrackingApi.Service;
 
 namespace TrackingApi.Controllers
 {
@@ -26,8 +27,12 @@ namespace TrackingApi.Controllers
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
 
+        private IAccountService AccService = null;
+
         public AccountController()
         {
+
+            AccService = new AccountService();
         }
 
         public AccountController(ApplicationUserManager userManager,
@@ -321,21 +326,23 @@ namespace TrackingApi.Controllers
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        public async Task<IHttpActionResult> Register(UserModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            await AccService.RegisterUser(model);
 
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            //var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
+            //IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+            //if (!result.Succeeded)
+            //{
+            //    return GetErrorResult(result);
+            //}
 
             return Ok();
         }
@@ -373,6 +380,7 @@ namespace TrackingApi.Controllers
             return Ok();
         }
 
+       
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)

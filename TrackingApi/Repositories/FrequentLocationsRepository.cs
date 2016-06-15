@@ -40,7 +40,7 @@ namespace TrackingApi.Repositories
         {
             try
             {
-                var entity = new FrequentLocations() {_id=ObjectId.GenerateNewId().ToString (), type = model.type, coordinates = model.coordinates };
+                var entity = new FrequentLocations() {_id=ObjectId.GenerateNewId().ToString (), type = model.type, coordinates = model.coordinates,SavedDate=DateTime.UtcNow };
 
                 _locations.InsertOne(entity);
             }
